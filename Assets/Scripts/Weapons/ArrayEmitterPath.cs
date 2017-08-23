@@ -7,6 +7,7 @@ using UnityEngine;
  * Author:  Gordon Niemann
  * File:    Reports when an Array Weapons Emitter Collides on a path
  * Notes:   Should only be one per Array Weapon
+ * TODO:    Setup call back
  */
 
 public class ArrayEmitterPath : MonoBehaviour

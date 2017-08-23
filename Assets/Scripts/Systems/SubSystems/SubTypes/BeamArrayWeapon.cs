@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class BeamArrayWeapon : EnergyWeapon
 {
+    #region Member Variables
+
     public Beam m_BeamPrefab;
     public ArrayEmitterPath m_ArrayPathForward;
     public ArrayEmitterPath m_ArrayPathReverse;
@@ -24,6 +26,10 @@ public class BeamArrayWeapon : EnergyWeapon
     private DOTweenPath m_ArrayPathReverseTween;
     private GameObject m_Emitter;
     private Beam m_BeamClone;
+
+    #endregion
+
+    #region Body
 
     protected override void Start ()
     {
@@ -60,6 +66,36 @@ public class BeamArrayWeapon : EnergyWeapon
         SetState(this.FiringSequence);
     }
 
+    protected override void AbortAttack()
+    {
+        base.AbortAttack();
+        m_BeamClone.TerminateBeam();
+        m_WeaponCharging = false;
+        m_EmitterCollision = false;
+        SetEmitterChargePathsStatus(false);
+    }
+
+    private void SetEmitterChargePathsStatus(bool status)
+    {
+        m_ArrayPathForward.gameObject.SetActive(status);
+        m_ArrayPathReverse.gameObject.SetActive(status);
+    }
+
+    protected override void FireUpdate()
+    {
+        m_WeaponDischarging = true;
+        m_BeamClone.AttackUpdate(m_Target.transform.position);
+    }
+
+    public void SetEmitterLocation(Vector3 emitter)
+    {
+        m_Emitter.transform.position = emitter;
+    }
+    
+    #endregion
+
+    #region Coroutines
+
     private IEnumerator FiringSequence()
     {
         SetEmitterChargePathsStatus(true);
@@ -94,32 +130,6 @@ public class BeamArrayWeapon : EnergyWeapon
         }
     }
 
-    protected override void AbortAttack()
-    {
-        base.AbortAttack();
-        m_BeamClone.TerminateBeam();
-        m_WeaponCharging = false;
-        m_EmitterCollision = false;
-        SetEmitterChargePathsStatus(false);
-    }
-
-    private void SetEmitterChargePathsStatus(bool status)
-    {
-        m_ArrayPathForward.gameObject.SetActive(status);
-        m_ArrayPathReverse.gameObject.SetActive(status);
-    }
-
-    protected override void FireUpdate()
-    {
-        m_WeaponDischarging = true;
-        m_BeamClone.AttackUpdate(m_Target.transform.position);
-    }
-
-    public void SetEmitterLocation(Vector3 emitter)
-    {
-        m_Emitter.transform.position = emitter;
-    }
-
     private IEnumerator MinBeamBurstStopWatch()
     {
         while (true)
@@ -144,4 +154,6 @@ public class BeamArrayWeapon : EnergyWeapon
             yield return null;
         }
     }
+
+    #endregion
 }

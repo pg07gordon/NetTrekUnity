@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class EnergyWeapon : SubSystems
 {
+    #region Member Variables
+
     public float m_MaxAngleOfAttackFrom = 0;
     public float m_MaxAngleOfAttackTo = 90;
 
@@ -101,6 +103,10 @@ public class EnergyWeapon : SubSystems
         }
     }
 
+    #endregion
+
+    #region Body
+
     protected override void Start()
     {
         base.Start();
@@ -154,6 +160,23 @@ public class EnergyWeapon : SubSystems
         m_UserActivelyTargettingFlag = false;
     }
 
+    protected virtual void StartNewFiringSequence() { }
+
+    protected virtual void FireUpdate()  { }
+
+    protected virtual void AbortAttack()
+    {
+        m_UserActivelyTargettingFlag = false;
+        m_WeaponDischarging = false;
+        m_WeaponCharging = false;
+        m_MinBeamBurstTimer = 0;
+        StateDefaults();
+    }
+
+    #endregion
+
+    #region Coroutines
+
     private IEnumerator CheckTargetLock()
     {
         while (true)
@@ -189,16 +212,5 @@ public class EnergyWeapon : SubSystems
         }
     }
 
-    protected virtual void StartNewFiringSequence() { }
-
-    protected virtual void FireUpdate()  { }
-
-    protected virtual void AbortAttack()
-    {
-        m_UserActivelyTargettingFlag = false;
-        m_WeaponDischarging = false;
-        m_WeaponCharging = false;
-        m_MinBeamBurstTimer = 0;
-        StateDefaults();
-    }
+    #endregion
 }
