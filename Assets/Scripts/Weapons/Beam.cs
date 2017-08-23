@@ -5,100 +5,69 @@ public class Beam : MonoBehaviour
 {
     public float m_UVTime; // UV Animation speed
     public float m_BeamMaxLenght = 100;
+    public float m_TrackSpeed = 5;
+    public float m_NewFireDelay = 0.1f;
 
     private float m_AnimateUVTime;
+    private float m_NewFireDelayTimer = 0f;
+
     private LineRenderer[] m_Lines;
-
-    private GameObject m_Target;
-    private Vector3 m_TargetPath;
-
-    public GameObject ship;
-
-
-    private Quaternion forwardRotation;
+    private Vector3 m_Target;
 
     private void Start()
     {
         m_Lines = GetComponentsInChildren<LineRenderer>();
-        m_Target = gameObject;
 
-        LastTarget = gameObject.transform.position;
-        NextTarget = gameObject.transform.position;
+        foreach (LineRenderer line in m_Lines)
+        {
+            line.SetPosition(1, new Vector3(0, 0, m_BeamMaxLenght));
+        }  
     }
 
     public void Init(GameObject emitter)
     {
         transform.parent = emitter.transform;
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
-    public void Shoot(GameObject target)
+    public void AttackUpdate(Vector3 target)
     {
-        //gameObject.SetActive(true);
+        gameObject.SetActive(true);
         m_Target = target;
+    }
 
-        step = 0;
-
-        if (Switch)
-        {
-            Switch = !Switch;
-            LastTarget = target.transform.position;
-        }
-        else
-        {
-            Switch = !Switch;
-            NextTarget = target.transform.position;
-        }
-
+    public void AttackNew(Vector3 target)
+    {
+        gameObject.SetActive(true);
+        m_Target = target;
+        m_NewFireDelayTimer = m_NewFireDelay;
     }
 
     public void TerminateBeam()
     {
-       //gameObject.SetActive(false);
+       gameObject.SetActive(false);
     }
-
-    private Vector3 LastTarget;
-    private Vector3 NextTarget;
-
-    private float step = 0f;
-    bool Switch = true;
-
 
     private void Update()
     {
+        if (m_NewFireDelayTimer <= 0)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_Target - transform.position), Time.deltaTime * m_TrackSpeed);
+        }
+        else
+        {
+            m_NewFireDelayTimer = m_NewFireDelayTimer - Time.deltaTime;
+            transform.rotation = Quaternion.LookRotation(m_Target - transform.position);
+        }
+
         m_AnimateUVTime += Time.deltaTime;
 
         if (m_AnimateUVTime > 1.0f)
             m_AnimateUVTime = 0f;
 
-        step += Time.deltaTime;
-
-        Vector3 smooth = Vector3.Lerp(LastTarget, NextTarget, step);
-
-        //m_TargetPath = (transform.InverseTransformPoint(m_Target.transform.position) - transform.localPosition).normalized * m_BeamMaxLenght;
-        m_TargetPath = (transform.InverseTransformPoint(smooth) - transform.localPosition).normalized * m_BeamMaxLenght;
-
         foreach (LineRenderer line in m_Lines)
         {
-            line.SetPosition(0, transform.localPosition);
-
-            line.SetPosition(1, m_TargetPath);
-
             line.material.SetTextureOffset("_MainTex", new Vector2(m_AnimateUVTime * m_UVTime, 0f));
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(LastTarget, new Vector3(1, 1, 1));
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawCube(NextTarget, new Vector3(1, 1, 1));
-
-        Vector3 x = Vector3.Lerp(LastTarget, NextTarget, step);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(x, new Vector3(1, 1, 1));
     }
 }

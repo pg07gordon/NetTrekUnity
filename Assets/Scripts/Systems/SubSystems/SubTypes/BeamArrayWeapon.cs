@@ -82,7 +82,9 @@ public class BeamArrayWeapon : EnergyWeapon
         {
             SetEmitterChargePathsStatus(false);
             m_EmitterCollision = false;
-            Fire();
+
+            m_WeaponDischarging = true;
+            m_BeamClone.AttackNew(m_Target.transform.position);
         }
     }
 
@@ -101,10 +103,10 @@ public class BeamArrayWeapon : EnergyWeapon
         m_ArrayPathReverse.gameObject.SetActive(status);
     }
 
-    protected override void Fire()
+    protected override void FireUpdate()
     {
         m_WeaponDischarging = true;
-        m_BeamClone.Shoot(m_Target);
+        m_BeamClone.AttackUpdate(m_Target.transform.position);
     }
 
     public void SetEmitterLocation(Vector3 emitter)

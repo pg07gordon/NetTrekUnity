@@ -139,7 +139,7 @@ public class EnergyWeapon : SubSystems
         }
         else if (m_CanLockWeapons && m_WeaponDischarging)
         {
-            Fire();
+            FireUpdate();
         }
     }
 
@@ -183,15 +183,9 @@ public class EnergyWeapon : SubSystems
         }
     }
 
-    protected virtual void StartNewFiringSequence()
-    {
+    protected virtual void StartNewFiringSequence() { }
 
-    }
-
-    protected virtual void Fire()
-    {
-
-    }
+    protected virtual void FireUpdate()  { }
 
     protected virtual void AbortAttack()
     {
