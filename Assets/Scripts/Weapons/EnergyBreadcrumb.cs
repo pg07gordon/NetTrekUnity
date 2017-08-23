@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Creates an Energy path that fades overtime (Made for Array Weapons)
+ */
+
 public class EnergyBreadcrumb : MonoBehaviour
 {
     public uint m_NumbOfCrumbs = 5;

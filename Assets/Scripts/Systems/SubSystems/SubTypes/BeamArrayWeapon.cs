@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Controls Beam Array Weapons (Weapons that follow a charge path before firing)
+ */
+
 public class BeamArrayWeapon : EnergyWeapon
 {
     public Beam m_BeamPrefab;
@@ -30,7 +36,7 @@ public class BeamArrayWeapon : EnergyWeapon
 
         m_ArrayPathForwardTween = m_ArrayPathForward.gameObject.GetComponent<DOTweenPath>();
         m_ArrayPathReverseTween = m_ArrayPathReverse.gameObject.GetComponent<DOTweenPath>();
-        m_ArrayPathForward.primaryArray = true; // So only one array updates Emitter Location
+        m_ArrayPathForward.m_PrimaryArray = true; // So only one array updates Emitter Location
         
         SetEmitterChargePathsStatus(false);
     }

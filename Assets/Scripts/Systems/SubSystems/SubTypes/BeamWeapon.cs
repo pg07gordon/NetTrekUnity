@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    
+ */
+
 public class BeamWeapon : EnergyWeapon
 {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+	protected override void Start ()
+    {
 		
 	}
 }

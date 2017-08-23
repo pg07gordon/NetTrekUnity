@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Reports when an Array Weapons Emitter Collides on a path
+ * Notes:   Should only be one per Array Weapon
+ */
+
 public class ArrayEmitterPath : MonoBehaviour
 {
     private BeamArrayWeapon m_BeamArray;
-    internal bool primaryArray = false;
+    internal bool m_PrimaryArray = false;
 
     void Start()
     {
@@ -14,7 +21,7 @@ public class ArrayEmitterPath : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (primaryArray)
+        if (m_PrimaryArray)
         {
             m_BeamArray.SetEmitterLocation(other.transform.position);
             m_BeamArray.m_EmitterCollision = true;

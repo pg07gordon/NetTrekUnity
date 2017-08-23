@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PulseWeapon : MonoBehaviour {
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    
+ */
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+public class PulseWeapon : EnergyWeapon
+{
+    protected override void Start()
+    {
 		
 	}
 }

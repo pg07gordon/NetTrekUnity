@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Base Class for all systems
+ */
+
 public class Systems : MonoBehaviour
 {
     public int  m_HitPoints = 100;
     public float m_MaxRepairPerSec = 1;
+
     protected float m_CurrentHealth;
     protected bool m_StatusOnLine = true;
 

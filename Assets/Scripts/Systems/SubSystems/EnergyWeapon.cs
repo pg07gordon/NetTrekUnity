@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Base class for Energy Weapons
+ */
+
 public class EnergyWeapon : SubSystems
 {
     public float m_MaxAngleOfAttackFrom = 0;

@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Builds a Grid that moves/rebuilds with the players movement
+ */
+
 public class MapGrid : MonoBehaviour
 {
     public GameObject m_GridUnit;

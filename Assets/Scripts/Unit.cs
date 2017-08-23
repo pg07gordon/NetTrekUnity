@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Base Class for Ships and Stations
+ */
+
 public class Unit : MonoBehaviour
 {
     [Range(1, 100)]
-    private int hullHealth = 100;
+    public int m_HullStrength = 100;
 
     void Awake()
     {

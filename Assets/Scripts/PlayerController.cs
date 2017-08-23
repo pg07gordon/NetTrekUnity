@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Player Mouse/Input/Commands and Player Ship Movement Physics
+ * TODO:    Move Movement Physics to Unit
+ */
+
 public class PlayerController : Unit
 {
     private float m_HorizontalInput;

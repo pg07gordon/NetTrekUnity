@@ -2,17 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    
+ */
+
 public class PlayerCamera : MonoBehaviour
 {
-    public GameObject playerShip;
+    private GameObject m_PlayerShip;
 
-	void Start ()
+	private void Start ()
     {
-		
+        m_PlayerShip = transform.parent.transform.GetComponentInChildren<Unit>().gameObject;
 	}
-	
-	void Update ()
+
+    public void UpdatePlayerShip(GameObject newShip)
     {
-        transform.position = playerShip.transform.position;
+        if (newShip != null)
+        {
+            m_PlayerShip = newShip;
+        }
+    }
+
+    private void Update ()
+    {
+        transform.position = m_PlayerShip.transform.position;
     }
 }

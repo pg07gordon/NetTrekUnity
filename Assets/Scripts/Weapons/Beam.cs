@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * Project: NetTrek Unity
+ * Author:  Gordon Niemann
+ * File:    Controls Attack “Beams”
+ */
+
 public class Beam : MonoBehaviour
 {
-    public float m_UVTime; // UV Animation speed
+    public float m_UVTime; // UV Animation speed on Line Renderer
     public float m_BeamMaxLenght = 100;
     public float m_TrackSpeed = 5;
     public float m_NewFireDelay = 0.1f;
@@ -30,17 +36,17 @@ public class Beam : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void AttackUpdate(Vector3 target)
-    {
-        gameObject.SetActive(true);
-        m_Target = target;
-    }
-
     public void AttackNew(Vector3 target)
     {
         gameObject.SetActive(true);
         m_Target = target;
         m_NewFireDelayTimer = m_NewFireDelay;
+    }
+
+    public void AttackUpdate(Vector3 target)
+    {
+        gameObject.SetActive(true);
+        m_Target = target;
     }
 
     public void TerminateBeam()
