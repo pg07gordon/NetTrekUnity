@@ -15,7 +15,7 @@ public class EnergyWeapon : SubSystems
     public float m_MaxAngleOfAttackFrom = 0;
     public float m_MaxAngleOfAttackTo = 90;
 
-    public float m_OverAngleReFire = 20; 
+    public float m_OverAngleReFire = 20;
 
     public float m_MaxAttackDistance = 50;
     public float m_MinAttackDistance = 5;
@@ -34,6 +34,7 @@ public class EnergyWeapon : SubSystems
     protected bool m_UserActivelyTargettingFlag = false;
 
     protected GameObject m_Target;
+    protected GameObject m_Emitter;
 
     protected float m_EnergyRechargePerSec
     {
@@ -47,7 +48,9 @@ public class EnergyWeapon : SubSystems
     {
         get
         {
-            return m_Ship.transform.position - m_Target.transform.position;
+            Debug.DrawRay(m_Ship.transform.position, m_Target.transform.position - m_Ship.transform.position, Color.cyan);
+
+            return m_Target.transform.position - m_Ship.transform.position;
         }
     }
 
@@ -55,7 +58,7 @@ public class EnergyWeapon : SubSystems
     {
         get
         {
-            return Vector3.SignedAngle(m_TargetDir, -m_Ship.transform.forward, Vector3.up) * -1;
+            return Vector3.SignedAngle(m_TargetDir, m_Ship.transform.forward, Vector3.up) * -1;
         }
     }
 
@@ -81,9 +84,6 @@ public class EnergyWeapon : SubSystems
         }
     }
 
-    private Unit m_Ship;
-    //private Ray m_Ray;
-
     private float _EnergyLevels;
     private float m_EnergyLevels
     {
@@ -103,6 +103,8 @@ public class EnergyWeapon : SubSystems
         }
     }
 
+    private Unit m_Ship;
+
     #endregion
 
     #region Body
@@ -111,9 +113,10 @@ public class EnergyWeapon : SubSystems
     {
         base.Start();
 
+        m_Ship = GetComponentInParent<Unit>();
+        m_Emitter = GetComponentInChildren<EmitterPoint>().gameObject;
         m_EnergyLevels = m_CurrentAvailableEnergy;
 
-        m_Ship = GetComponentInParent<Unit>();
         StateDefaults();
     }
 
@@ -132,18 +135,6 @@ public class EnergyWeapon : SubSystems
     {
         m_Target = target;
         m_UserActivelyTargettingFlag = true;
-
-        /*
-        m_Ray = new Ray(m_Target.transform.position, m_TargetDir);
-        RaycastHit raycastHit;
-
-        Vector3 endPosition = m_Target.transform.position + (m_MaxAttackDistance * m_TargetDir);
-
-        if (Physics.Raycast(m_Ray, out raycastHit, m_MaxAttackDistance))
-        {
-            endPosition = raycastHit.point;
-        }
-        */
 
         if (m_CanLockWeapons && !m_WeaponCharging && !m_WeaponDischarging && m_EnergyLevels > m_MinEnergyLevelToFire)
         {

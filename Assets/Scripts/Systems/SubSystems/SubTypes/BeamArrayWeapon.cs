@@ -24,7 +24,6 @@ public class BeamArrayWeapon : EnergyWeapon
 
     private DOTweenPath m_ArrayPathForwardTween;
     private DOTweenPath m_ArrayPathReverseTween;
-    private GameObject m_Emitter;
     private Beam m_BeamClone;
 
     #endregion
@@ -35,10 +34,8 @@ public class BeamArrayWeapon : EnergyWeapon
     {
         base.Start();
 
-        m_Emitter = GetComponentInChildren<EmitterPoint>().gameObject;
-
         m_BeamClone = Instantiate(m_BeamPrefab, m_Emitter.transform.position, m_Emitter.transform.rotation);
-        m_BeamClone.Init(m_Emitter);
+        m_BeamClone.Init(m_Emitter, m_MaxAttackDistance);
 
         m_ArrayPathForwardTween = m_ArrayPathForward.gameObject.GetComponent<DOTweenPath>();
         m_ArrayPathReverseTween = m_ArrayPathReverse.gameObject.GetComponent<DOTweenPath>();

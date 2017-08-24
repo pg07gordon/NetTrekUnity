@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class PlayerController : Unit
 {
+    #region Member Variables
+
     private float m_HorizontalInput;
     private float m_VerticalInput;
 
@@ -86,6 +88,10 @@ public class PlayerController : Unit
 
     public EnergyWeapon blah; // TODO: Remove
 
+    #endregion
+
+    #region Body
+
     void Start ()
     {
         m_PlayerShipRb = m_PlayerShip.GetComponent<Rigidbody>();
@@ -144,10 +150,13 @@ public class PlayerController : Unit
         m_PlayerShip.transform.rotation = Quaternion.Euler(rollRot);
     }
 
+    #endregion
+
+    #region Controls
+
     private void MouseControls()
     {
         Vector3 test = new Vector3(m_CursorOnPos.x, 2, m_CursorOnPos.z); 
-
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -223,4 +232,6 @@ public class PlayerController : Unit
     {
 
     }
+
+    #endregion
 }

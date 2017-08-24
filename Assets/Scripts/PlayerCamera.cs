@@ -14,7 +14,7 @@ public class PlayerCamera : MonoBehaviour
 
 	private void Start ()
     {
-        m_PlayerShip = transform.parent.transform.GetComponentInChildren<Unit>().gameObject;
+        m_PlayerShip = transform.parent.transform.GetComponentInChildren<PlayerController>().m_PlayerShip;
 	}
 
     public void UpdatePlayerShip(GameObject newShip)

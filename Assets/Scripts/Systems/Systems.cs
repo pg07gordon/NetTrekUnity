@@ -21,7 +21,7 @@ public class Systems : MonoBehaviour
     protected StateMethod m_CurrentState;
 
     /// <summary>
-    /// Starts a new coroutine and stops all previous ones | Important: "this" on IEnumerator defined in children
+    /// Call StateDefaults to StopAllCoroutines and starts the requested Coroutine | Important: "this" on IEnumerator defined in children
     /// </summary>
     /// <param name="newState">One Coroutine to rule them all</param>
     protected void SetState(StateMethod newState)
@@ -31,6 +31,9 @@ public class Systems : MonoBehaviour
         StartCoroutine(m_CurrentState());
     }
 
+    /// <summary>
+    /// Spins up default coroutines and settings when SetState is called
+    /// </summary>
     protected virtual void StateDefaults()
     {
         StopAllCoroutines();
@@ -46,5 +49,3 @@ public class Systems : MonoBehaviour
         return duration;
     }
 }
-
-
