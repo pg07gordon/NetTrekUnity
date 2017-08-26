@@ -6,6 +6,7 @@ using UnityEngine;
  * Project: NetTrek Unity
  * Author:  Gordon Niemann
  * File:    Player Mouse/Input/Commands and Player Ship Movement Physics
+ * Note:    Very much a work in progress
  */
 
 public class PlayerController : Unit
@@ -75,7 +76,8 @@ public class PlayerController : Unit
     }
     */
 
-    public EnergyWeapon blah; // TODO: Remove
+    public EnergyWeapon TestPhaserArray; // TODO: Remove
+    public GameObject MainCam; // TODO: Remove
 
     #endregion
 
@@ -90,9 +92,7 @@ public class PlayerController : Unit
 	void Update ()
     {
         MouseControls();
-
         MovementControls();
-
         Commands();
     }
 
@@ -100,37 +100,28 @@ public class PlayerController : Unit
 
     #region Controls
 
+    // TODO: Refactor
     private void MouseControls()
     {
-        Vector3 test = new Vector3(m_CursorOnPos.x, 2, m_CursorOnPos.z); 
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            //m_MouseTarget.transform.position = test;
-            //m_CursorStartPos = test;
-        }
+        Vector3 cursorPos = new Vector3(m_CursorOnPos.x, 2, m_CursorOnPos.z); 
 
         if (Input.GetMouseButton(0))
         {
-            m_MouseTarget.transform.position = test;
+            m_MouseTarget.transform.position = cursorPos;
 
-            blah.AttemptWeaponLock(m_MouseTarget); // TODO: Remove
-
-            /*
-            if ((test - m_CursorStartPos).sqrMagnitude > 50f) // TODO: Remove Magic numb
-            {
-                m_CursorStartPos = test;
-            }
-            else
-            {
-                
-            }
-            */
+            TestPhaserArray.AttemptWeaponLock(m_MouseTarget);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            blah.ResetTargettingFlag();
+            TestPhaserArray.ResetTargettingFlag();
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") != 0f )
+        {
+            Vector3 camPos = MainCam.transform.position;
+            camPos.y += -(Input.GetAxis("Mouse ScrollWheel") * 4);
+            MainCam.transform.position = camPos;
         }
     }
 

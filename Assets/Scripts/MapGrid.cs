@@ -42,6 +42,8 @@ public class MapGrid : MonoBehaviour
                 posY = (y + 1) * (unitSize + m_GridSpacing) + gridCenter + m_PlayerShip.transform.position.y;
 
                 m_GridUnits[x,y].transform.position = new Vector3(posX, m_YAxis, posY);
+
+                m_GridUnits[x, y].transform.parent = transform;
             }
         }
     }
