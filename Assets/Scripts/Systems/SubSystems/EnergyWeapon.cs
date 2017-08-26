@@ -12,7 +12,11 @@ public class EnergyWeapon : Weapon
 {
     #region Member Variables
 
-    //public float m_OverAngleReFire = 20;
+    [SerializeField]
+    private float m_OverAngleReFire = 30;
+
+    [SerializeField]
+    private float m_OverAngleReFireWait = 0.5f;
 
     [SerializeField]
     private float m_EnergyConsumptionPerSec = 20;
@@ -80,6 +84,27 @@ public class EnergyWeapon : Weapon
         }
     }
 
+    private bool m_NewAttackSequence
+    {
+        get
+        {
+            return !m_WeaponDischarging 
+                    && !m_WeaponCharging 
+                    && m_EnergyLevels > m_MinEnergyLevelToFire;
+        }
+    }
+
+    private bool m_OverAngleStartNewAttackSequence
+    {
+        get
+        {
+            return m_WeaponDischarging
+                    && (m_LastFireStartAngle > (m_AngleToTarget + m_OverAngleReFire) || m_LastFireStartAngle < (m_AngleToTarget - m_OverAngleReFire))
+                    && !m_WeaponCharging
+                    && m_OverAngleReFireTimer <= 0;
+        }
+    }
+
     private float _EnergyLevels;
     private float m_EnergyLevels
     {
@@ -99,6 +124,8 @@ public class EnergyWeapon : Weapon
         }
     }
 
+    private float m_LastFireStartAngle;
+    private float m_OverAngleReFireTimer;
     private Unit m_Ship;
 
     #endregion
@@ -120,6 +147,7 @@ public class EnergyWeapon : Weapon
     {
         base.StateDefaults();
         StartCoroutine(this.EnergyLevels());
+        StartCoroutine(this.OverAngleReFireCountDown());
 
         if (m_WeaponCharging || m_WeaponDischarging || m_MinBeamBurstTimer > 0)
         {
@@ -132,13 +160,18 @@ public class EnergyWeapon : Weapon
         m_Target = target;
         m_UserActivelyTargettingFlag = true;
 
-        if (m_CanLockWeapons && !m_WeaponCharging && !m_WeaponDischarging && m_EnergyLevels > m_MinEnergyLevelToFire)
+        if (m_CanLockWeapons)
         {
-            StartNewFiringSequence();
-        }
-        else if (m_CanLockWeapons && m_WeaponDischarging)
-        {
-            FireUpdate();
+            if (m_NewAttackSequence || m_OverAngleStartNewAttackSequence)
+            {
+                StartNewFiringSequence();
+                m_LastFireStartAngle = m_AngleToTarget;
+                m_OverAngleReFireTimer = m_OverAngleReFireWait;
+            }
+            else if (m_WeaponDischarging)
+            {
+                FireUpdate();
+            }
         }
     }
 
@@ -195,6 +228,15 @@ public class EnergyWeapon : Weapon
                 AbortAttack();
             }
 
+            yield return null;
+        }
+    }
+
+    private IEnumerator OverAngleReFireCountDown()
+    {
+        while(true)
+        {
+            m_OverAngleReFireTimer = Wait(m_OverAngleReFireTimer);
             yield return null;
         }
     }
