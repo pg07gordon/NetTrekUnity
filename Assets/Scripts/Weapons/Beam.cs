@@ -21,6 +21,7 @@ public class Beam : MonoBehaviour
     private Vector3 m_Target;
     private Vector3 m_TargetDir;
     private Ray m_Ray;
+    private EmitterPoint m_Emitter;
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class Beam : MonoBehaviour
         }  
     }
 
-    public void Init(GameObject emitter, float BeamMaxLenght)
+    public void Init(EmitterPoint emitter, float BeamMaxLenght)
     {
         transform.parent = emitter.transform;
 
@@ -41,25 +42,33 @@ public class Beam : MonoBehaviour
             m_BeamMaxLenght = BeamMaxLenght;
         }
 
+        m_Emitter = emitter;
+        m_Emitter.TurnOffEmitterLight();
+
         gameObject.SetActive(false);
     }
 
     public void AttackNew(Vector3 target)
     {
         gameObject.SetActive(true);
+        m_Emitter.TurnOnEmitterLight();
         m_Target = target;
         m_NewFireDelayTimer = m_NewFireDelay;
+        
     }
 
     public void AttackUpdate(Vector3 target)
     {
         gameObject.SetActive(true);
+        m_Emitter.TurnOnEmitterLight();
         m_Target = target;
     }
 
     public void TerminateBeam()
     {
-       gameObject.SetActive(false);
+        m_Emitter.TurnOffEmitterLight();
+        gameObject.SetActive(false);
+
     }
 
     private GameObject HitTest()

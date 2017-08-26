@@ -8,33 +8,31 @@ using UnityEngine;
  * File:    Base class for Energy Weapons
  */
 
-public class EnergyWeapon : SubSystems
+public class EnergyWeapon : Weapon
 {
     #region Member Variables
 
-    public float m_MaxAngleOfAttackFrom = 0;
-    public float m_MaxAngleOfAttackTo = 90;
+    //public float m_OverAngleReFire = 20;
 
-    public float m_OverAngleReFire = 20;
+    [SerializeField]
+    private float m_EnergyConsumptionPerSec = 20;
 
-    public float m_MaxAttackDistance = 50;
-    public float m_MinAttackDistance = 5;
+    [SerializeField]
+    private float m_MinEnergyLevelToFire = 40;
 
-    public float m_EnergyConsumptionPerSec = 20;
-    public float m_MinEnergyLevelToFire = 40;
+    [SerializeField]
+    protected float m_BeamDelayAfterStopTargeting = 0.1f;
 
-    public float m_MinBeamBurstTime = 0.25f;
+    [SerializeField]
+    protected float m_MinBeamBurstTime = 0.25f;
     protected float m_MinBeamBurstTimer = 0;
-
-    public float m_BeamDelayAfterStopTargeting = 0.1f;
 
     protected bool m_WeaponDischarging = false;
     protected bool m_WeaponCharging = false;
-
     protected bool m_UserActivelyTargettingFlag = false;
 
     protected GameObject m_Target;
-    protected GameObject m_Emitter;
+    protected EmitterPoint m_Emitter;
 
     protected float m_EnergyRechargePerSec
     {
@@ -48,8 +46,6 @@ public class EnergyWeapon : SubSystems
     {
         get
         {
-            Debug.DrawRay(m_Ship.transform.position, m_Target.transform.position - m_Ship.transform.position, Color.cyan);
-
             return m_Target.transform.position - m_Ship.transform.position;
         }
     }
@@ -76,8 +72,8 @@ public class EnergyWeapon : SubSystems
         {
             if (m_MaxAttackDistance >= m_DistanceToTarget
                 && m_MinAttackDistance <= m_DistanceToTarget
-                && m_MaxAngleOfAttackFrom < m_AngleToTarget
-                && m_MaxAngleOfAttackTo > m_AngleToTarget)
+                && m_AngleOfAttack.x < m_AngleToTarget
+                && m_AngleOfAttack.y > m_AngleToTarget)
                 return true;
             else
                 return false;
@@ -114,7 +110,7 @@ public class EnergyWeapon : SubSystems
         base.Start();
 
         m_Ship = GetComponentInParent<Unit>();
-        m_Emitter = GetComponentInChildren<EmitterPoint>().gameObject;
+        m_Emitter = GetComponentInChildren<EmitterPoint>();
         m_EnergyLevels = m_CurrentAvailableEnergy;
 
         StateDefaults();

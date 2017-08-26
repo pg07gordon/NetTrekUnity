@@ -25,18 +25,6 @@ public class GameManager : MonoBehaviour
 
     private static GameManager _instance;
 
-    void Awake()
-    {
+    public int m_maxGameSubLightSpeed = 20;
 
-    }
-
-    void Start ()
-    {
-		
-	}
-	
-	void Update ()
-    {
-		
-	}
 }

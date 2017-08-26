@@ -13,12 +13,20 @@ public class BeamArrayWeapon : EnergyWeapon
 {
     #region Member Variables
 
-    public Beam m_BeamPrefab;
-    public ArrayEmitterPath m_ArrayPathForward;
-    public ArrayEmitterPath m_ArrayPathReverse;
-    public float m_ArrayChargeTime = 45; // TODO: Needs to be Updated
+    [SerializeField]
+    private Beam m_BeamPrefab;
 
-    public float AngleMagnitudeBeforeNewBeam = -1;
+    [SerializeField]
+    private ArrayEmitterPath m_ArrayPathForward;
+
+    [SerializeField]
+    private ArrayEmitterPath m_ArrayPathReverse;
+
+    [SerializeField]
+    private float m_ArrayChargeTime = 45; // TODO: Needs to be Updated
+
+    [SerializeField]
+    private float AngleMagnitudeBeforeNewBeam = -1;
 
     internal bool m_EmitterCollision = false; // Ready to Fire
 
@@ -101,8 +109,8 @@ public class BeamArrayWeapon : EnergyWeapon
         m_ArrayPathForwardTween.DORewind();
         m_ArrayPathReverseTween.DORewind();
 
-        float arrayPathForwardTweenDuration = Mathf.Abs(Mathf.Abs(m_MaxAngleOfAttackTo) - Mathf.Abs(m_AngleToTarget)) / m_ArrayChargeTime;
-        float arrayPathReverseTweenDuration = Mathf.Abs(Mathf.Abs(m_MaxAngleOfAttackFrom) - Mathf.Abs(m_AngleToTarget)) / m_ArrayChargeTime;
+        float arrayPathForwardTweenDuration = Mathf.Abs(Mathf.Abs(m_AngleOfAttack.y) - Mathf.Abs(m_AngleToTarget)) / m_ArrayChargeTime;
+        float arrayPathReverseTweenDuration = Mathf.Abs(Mathf.Abs(m_AngleOfAttack.x) - Mathf.Abs(m_AngleToTarget)) / m_ArrayChargeTime;
 
         m_ArrayPathForwardTween.GetTween().timeScale = arrayPathForwardTweenDuration;
         m_ArrayPathReverseTween.GetTween().timeScale = arrayPathReverseTweenDuration;
