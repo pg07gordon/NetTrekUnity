@@ -13,7 +13,9 @@ public class Beam : MonoBehaviour
     public float m_TrackSpeed = 5;
     public float m_NewFireDelay = 0.1f;
 
-    private float m_BeamMaxLenght = 20;
+    private float m_BeamMaxLength = 20;
+    private float m_BeamLength;
+
     private float m_AnimateUVTime;
     private float m_NewFireDelayTimer = 0f;
 
@@ -26,11 +28,6 @@ public class Beam : MonoBehaviour
     private void Start()
     {
         m_Lines = GetComponentsInChildren<LineRenderer>();
-
-        foreach (LineRenderer line in m_Lines)
-        {
-            line.SetPosition(1, new Vector3(0, 0, m_BeamMaxLenght));
-        }  
     }
 
     public void Init(EmitterPoint emitter, float BeamMaxLenght)
@@ -39,7 +36,7 @@ public class Beam : MonoBehaviour
 
         if (BeamMaxLenght > 1)
         {
-            m_BeamMaxLenght = BeamMaxLenght;
+            m_BeamMaxLength = BeamMaxLenght;
         }
 
         m_Emitter = emitter;
@@ -78,13 +75,16 @@ public class Beam : MonoBehaviour
 
         //Vector3 endPosition = m_Target + (m_BeamMaxLenght * m_TargetDir);
 
-        if (Physics.Raycast(m_Ray, out raycastHit, m_BeamMaxLenght))
+        if (Physics.Raycast(m_Ray, out raycastHit, m_BeamMaxLength))
         {
-            //endPosition = raycastHit.point;
+            m_BeamLength = Vector3.Distance(m_Emitter.transform.position, raycastHit.point);
 
             return raycastHit.transform.gameObject;
         }
-
+        else
+        {
+            m_BeamLength = m_BeamMaxLength;
+        }
         return null;
     }
 
@@ -112,6 +112,7 @@ public class Beam : MonoBehaviour
 
         foreach (LineRenderer line in m_Lines)
         {
+            line.SetPosition(1, new Vector3(0, 0, m_BeamLength));
             line.material.SetTextureOffset("_MainTex", new Vector2(m_AnimateUVTime * m_UVTime, 0f));
         }
     }
