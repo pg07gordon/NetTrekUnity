@@ -5,6 +5,9 @@ using UnityEngine;
 public class Weapon : SubSystems
 {
     [SerializeField]
+    protected GameObject m_WeaponBody;
+
+    [SerializeField]
     protected Vector2 m_AngleOfAttack;
 
     [SerializeField]

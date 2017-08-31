@@ -22,7 +22,10 @@ public class Beam : MonoBehaviour
     private LineRenderer[] m_Lines;
     private Vector3 m_Target;
     private Vector3 m_TargetDir;
+
     private Ray m_Ray;
+    private RaycastHit m_RayHit;
+
     private EmitterPoint m_Emitter;
 
     private void Start()
@@ -45,20 +48,16 @@ public class Beam : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void AttackNew(Vector3 target)
+    public void Fire(Vector3 target, bool newAttack)
     {
         gameObject.SetActive(true);
         m_Emitter.TurnOnEmitterLight();
         m_Target = target;
-        m_NewFireDelayTimer = m_NewFireDelay;
-        
-    }
 
-    public void AttackUpdate(Vector3 target)
-    {
-        gameObject.SetActive(true);
-        m_Emitter.TurnOnEmitterLight();
-        m_Target = target;
+        if (newAttack)
+        {
+            m_NewFireDelayTimer = m_NewFireDelay;
+        }
     }
 
     public void TerminateBeam()
@@ -71,15 +70,14 @@ public class Beam : MonoBehaviour
     private GameObject HitTest()
     {
         m_Ray = new Ray(transform.position, transform.forward);
-        RaycastHit raycastHit;
 
         //Vector3 endPosition = m_Target + (m_BeamMaxLenght * m_TargetDir);
 
-        if (Physics.Raycast(m_Ray, out raycastHit, m_BeamMaxLength))
+        if (Physics.Raycast(m_Ray, out m_RayHit, m_BeamMaxLength))
         {
-            m_BeamLength = Vector3.Distance(m_Emitter.transform.position, raycastHit.point);
+            m_BeamLength = Vector3.Distance(m_Emitter.transform.position, m_RayHit.point);
 
-            return raycastHit.transform.gameObject;
+            return m_RayHit.transform.gameObject;
         }
         else
         {

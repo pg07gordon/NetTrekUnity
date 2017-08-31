@@ -89,7 +89,7 @@ public class BeamArrayWeapon : EnergyWeapon
     protected override void FireUpdate()
     {
         m_WeaponDischarging = true;
-        m_BeamClone.AttackUpdate(m_Target.transform.position);
+        m_BeamClone.Fire(m_Target.transform.position, false);
     }
 
     public void SetEmitterLocation(Vector3 emitter)
@@ -131,7 +131,7 @@ public class BeamArrayWeapon : EnergyWeapon
             m_EmitterCollision = false;
 
             m_WeaponDischarging = true;
-            m_BeamClone.AttackNew(m_Target.transform.position);
+            m_BeamClone.Fire(m_Target.transform.position, true);
         }
     }
 
